@@ -161,3 +161,23 @@ footer {
 
 }
 
+body.index-page header a.btn[href="index.html"] {
+  color: rgb(223, 10, 212); /* Couleur du texte */
+  padding: 10px 20px; /* Ajustez le rembourrage selon vos préférences */
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+body.liste-page header a.btn[href="Liste.html"] {
+  color: rgb(223, 10, 212); /* Couleur du texte */
+  padding: 10px 20px; /* Ajustez le rembourrage selon vos préférences */
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+body.recup-page header a.btn[href="Recup.html"] {
+  color: rgb(223, 10, 212); /* Couleur du texte */
+  padding: 10px 20px; /* Ajustez le rembourrage selon vos préférences */
+  text-decoration: none;
+  border-radius: 5px;
+}
