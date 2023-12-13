@@ -27,8 +27,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/submit', async (req, res) => {
-  const data1 = req.body.Prenom;
-  const data2 = req.body.Nom;
+  const data1 = req.body.Username;
+  const data2 = req.body.Mail;
   const data3 = req.body.MDP;
 
   console.log('Received data:', data1, data2, data3);
@@ -36,7 +36,7 @@ app.post('/submit', async (req, res) => {
   try {
     // PostgreSQL
     const pgClient = await pgPool.connect();
-    await pgClient.query('INSERT INTO utilisateur ("Prenom", "Nom") VALUES ($1, $2)', [data1, data2]);
+    await pgClient.query('INSERT INTO utilisateur ("Username", "Mail") VALUES ($1, $2)', [data1, data2]);
 
     // Récupération de toutes les données depuis la base de données sous la bonne forme
     const allDataFromDB = (await pgClient.query('SELECT * FROM utilisateur')).rows;
@@ -70,7 +70,7 @@ app.get('/getUserData', async (req, res) => {
   try {
     // PostgreSQL
     const pgClient = await pgPool.connect();
-    const allUserDataFromDB = (await pgClient.query('SELECT "Prenom", "Nom" FROM utilisateur')).rows;
+    const allUserDataFromDB = (await pgClient.query('SELECT "Username", "Mail" FROM utilisateur')).rows;
     pgClient.release();
 
     console.log('Données utilisateur depuis PostgreSQL:', allUserDataFromDB);
@@ -84,18 +84,18 @@ app.get('/getUserData', async (req, res) => {
 
 app.get('/getPassword', async (req, res) => {
   try {
-    const Prenom = req.query.Prenom;
-    const Nom = req.query.Nom;
+    const Username = req.query.Username;
+    const Mail = req.query.Mail;
 
     // Redis
     const passwordFromRedis = await new Promise((resolve, reject) => {
-      redisClient.hget('userPasswords', `${Prenom}-${Nom}`, (err, result) => {
+      redisClient.hget('userPasswords', `${Username}-${Mail}`, (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });
     });
 
-    console.log(`Mot de passe récupéré depuis Redis pour ${Prenom} ${Nom}:`, passwordFromRedis);
+    console.log(`Mot de passe récupéré depuis Redis pour ${Username} ${Mail}:`, passwordFromRedis);
 
     res.send(passwordFromRedis);
   } catch (error) {
@@ -106,14 +106,14 @@ app.get('/getPassword', async (req, res) => {
 
 app.delete('/deleteUser', async (req, res) => {
   try {
-    const Prenom = req.query.Prenom;
-    const Nom = req.query.Nom;
+    const Username = req.query.Username;
+    const Mail = req.query.Mail;
 
     // PostgreSQL
     const pgClient = await pgPool.connect();
-    await pgClient.query('DELETE FROM utilisateur WHERE "Prenom" = $1 AND "Nom" = $2', [Prenom, Nom]);
+    await pgClient.query('DELETE FROM utilisateur WHERE "Username" = $1 AND "Mail" = $2', [Username, Mail]);
 
-    console.log(`Utilisateur ${Prenom} ${Nom} supprimé depuis PostgreSQL`);
+    console.log(`Utilisateur ${Username} ${Mail} supprimé depuis PostgreSQL`);
     
 
     pgClient.release();

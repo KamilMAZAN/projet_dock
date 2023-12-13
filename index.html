@@ -12,22 +12,26 @@
 
 </head>
 <body>
-  <h1>Consultation des mots de passe</h1>
+  <header>
+    <h1>Consultation des mots de passe</h1>
+  </header>
+  
   <form id="myForm" method="post">
     <!-- Input 1 -->
-    <label for="Prenom">Prenom :</label>
-    <input type="text" id="Prenom" name="Prenom" required>
+    <label for="Username">Username :</label>
+    <input type="text" id="Username" name="Username" required placeholder="Username" onfocus="this.placeholder=''" onblur="this.placeholder='Username'">
     <br>
 
     <!-- Input 2 -->
-    <label for="Nom">Nom :</label>
-    <input type="text" id="Nom" name="Nom" required>
+    <label for="Mail">Mail :</label>
+    <input type="text" id="Mail" name="Mail" required placeholder="Mail@gmail.com" onfocus="this.placeholder=''" onblur="this.placeholder='Mail@gmail.com'">
     <br>
 
     <!-- Input 3 -->
     <label for="MDP">Mot de passe :</label>
-    <input type="text" id="MDP" name="MDP" required>
+    <input type="password" id="MDP" name="MDP" required placeholder="********" onfocus="this.placeholder=''" onblur="this.placeholder='********'">
     <br>
+
 
     <!-- Submit Button -->
     <button type="button" onclick="submitForm()">Submit</button>
@@ -35,12 +39,12 @@
 
   
 
- <!-- Tableau pour afficher les noms et prénoms depuis PostgreSQL -->
+ <!-- Tableau pour afficher les Mails et préMails depuis PostgreSQL -->
  <table border="1">
   <thead>
     <tr>
-      <th>Prenom</th>
-      <th>Nom</th>
+      <th>Username</th>
+      <th>Mail</th>
       <th>Mot de passe</th>
       <th>Supprimer</th>
     </tr>
@@ -51,8 +55,8 @@
 <script>
 
 function submitForm() {
-    const data1 = $('#Prenom').val();
-    const data2 = $('#Nom').val();
+    const data1 = $('#Username').val();
+    const data2 = $('#Mail').val();
     const data3 = $('#MDP').val();
 
     console.log('Submitting data:', data1, data2, data3);
@@ -60,7 +64,7 @@ function submitForm() {
     $.ajax({
       type: 'POST',
       url: '/submit',
-      data: { Prenom: data1, Nom: data2, MDP: data3 },
+      data: { Username: data1, Mail: data2, MDP: data3 },
       success: function(response) {
         console.log('Server response:', response);
         updateUserDataTable(response.dataFromDB);
@@ -86,15 +90,15 @@ function submitForm() {
       const cell3 = newRow.insertCell(2);
       const cell4 = newRow.insertCell(3); // Nouvelle cellule pour le bouton de suppression
 
-      cell1.innerHTML = rowData.Prenom;
-      cell2.innerHTML = rowData.Nom;
+      cell1.innerHTML = rowData.Username;
+      cell2.innerHTML = rowData.Mail;
 
       // Bouton pour récupérer le mot de passe
       const retrievePasswordButton = document.createElement('button');
       retrievePasswordButton.textContent = 'Récupérer le mot de passe';
       retrievePasswordButton.onclick = function() {
         // Appeler la fonction AJAX pour récupérer le mot de passe depuis Redis
-        retrievePassword(rowData.Prenom, rowData.Nom);
+        retrievePassword(rowData.Username, rowData.Mail);
       };
       cell3.appendChild(retrievePasswordButton);
 
@@ -103,19 +107,19 @@ function submitForm() {
       deleteUserButton.textContent = 'Supprimer l\'utilisateur';
       deleteUserButton.onclick = function() {
         // Appeler la fonction AJAX pour supprimer l'utilisateur
-        deleteUser(rowData.Prenom, rowData.Nom);
+        deleteUser(rowData.Username, rowData.Mail);
       };
       cell4.appendChild(deleteUserButton);
     });
   }
    // JavaScript code for AJAX retrieval of password from Redis
-   function retrievePassword(Prenom, Nom) {
+   function retrievePassword(Username, Mail) {
     $.ajax({
       type: 'GET',
-      url: `/getPassword?Prenom=${Prenom}&Nom=${Nom}`,
+      url: `/getPassword?Username=${Username}&Mail=${Mail}`,
       success: function(response) {
         console.log('Mot de passe récupéré:', response);
-        alert(`Le mot de passe pour ${Prenom} ${Nom} est : ${response}`);
+        alert(`Le mot de passe pour ${Username} ${Mail} est : ${response}`);
       },
       error: function(error) {
         console.error('Erreur lors de la récupération du mot de passe:', error);
@@ -140,10 +144,10 @@ function submitForm() {
 
 
    // JavaScript code for AJAX deletion of user from PostgreSQL
-function deleteUser(Prenom, Nom) {
+function deleteUser(Username, Mail) {
   $.ajax({
     type: 'DELETE',
-    url: `/deleteUser?Prenom=${Prenom}&Nom=${Nom}`,
+    url: `/deleteUser?Username=${Username}&Mail=${Mail}`,
     success: function(response) {
       console.log('Utilisateur supprimé avec succès:', response);
       // Mettre à jour le tableau après la suppression
