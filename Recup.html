@@ -38,6 +38,10 @@
         function submitForm() {
             const data1 = $('#Username').val();
             const data2 = $('#Mail').val();
+            if (!data1 || !data2 || !data3) {
+                alert('Veuillez remplir tous les champs');
+                return;
+            }
             console.log('Submitting data:', data1, data2);
             retrievePassword(data1, data2);
         }

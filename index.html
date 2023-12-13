@@ -44,6 +44,12 @@
       const data1 = $('#Username').val();
       const data2 = $('#Mail').val();
       const data3 = $('#MDP').val();
+
+      
+      if (!data1 || !data2 || !data3) {
+        alert('Veuillez remplir tous les champs');
+        return;
+      }
   
       console.log('Submitting data:', data1, data2, data3);
   
