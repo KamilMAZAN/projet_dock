@@ -23,6 +23,18 @@ header {
   padding-bottom: 10px;
   width: 100%;
   color: rgb(137, 14, 218);
+  position: relative; /* Ajout d'une position relative */
+}
+
+header img {
+  position: absolute; /* Modification de la position à absolue */
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 10%;
+  border: 3px solid rgb(137, 14, 218);
 }
 
 
@@ -135,5 +147,17 @@ a:hover {
   border: 1px solid transparent;
   border-radius: 0.25rem;
   transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+footer {
+  background-color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  width: 100%;
+  color: rgb(137, 14, 218);
+  position: absolute;
+  bottom: 0;
+  font-size: 0.6em;
+  letter-spacing: 0.1em;
+
 }
 
