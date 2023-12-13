@@ -25,6 +25,7 @@ header {
   color: rgb(137, 14, 218);
 }
 
+
 main {
   display: flex;
   justify-content: space-between;
@@ -33,6 +34,7 @@ main {
 }
 
 form {
+  margin-top: 100px;
   width: 40%;
   padding: 20px;
   border-radius: 8px;
@@ -104,5 +106,34 @@ table button {
  button:hover {
     transform: scale(1.1); /* Changez la taille selon vos besoins */
    transition: transform 0.2s; /* Ajoute une transition pour un effet plus fluide */
+   background-color: rgb(223, 10, 212);
   
  }
+
+ /* Styles pour les liens */
+a {
+  color: rgb(137, 14, 218); /* Couleur du lien (bleu par défaut) */
+  text-decoration: none; /* Supprime le soulignement par défaut */
+  transition: color 0.3s ease-in-out; /* Ajoute une transition pour un effet de fondu lors du survol */
+}
+
+a:hover {
+  color: rgb(223, 10, 212); /* Change la couleur du lien au survol de la souris */
+}
+
+/* Styles pour les boutons */
+.btn {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
