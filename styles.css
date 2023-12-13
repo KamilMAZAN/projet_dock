@@ -1,0 +1,88 @@
+/* styles.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('BG.jpg');
+  background-size: cover;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+h1 {
+  font-family: 'Times New Roman', serif; /* Exemple : Changer 'Times New Roman' à la police souhaitée */
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+  /*background-color: rgba(255, 255, 255, 0.8);*/
+  width: 100%;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+form {
+  width: 40%;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Ajout de styles pour les input et les label */
+form label {
+  display: block; /* Les labels sont maintenant des blocs, pour les aligner verticalement */
+  margin-bottom: 10px; /* Séparation de 10px entre les labels */
+  font-family: 'Courier New', monospace;
+  /*mettre en gras*/
+  font-weight: bold;
+}
+
+form input {
+  width: calc(100% - 20px); /* Largeur des champs de saisie, en tenant compte du padding de 20px */
+  padding: 5px;
+  margin-bottom: 10px; /* Séparation de 10px entre les champs de saisie */
+}
+
+form button {
+  width: 100%; /* Le bouton occupe toute la largeur du formulaire */
+  padding: 10px; /* Ajoutez un espace autour du texte du bouton */
+  margin-top: 10px; /* Espacement par rapport aux champs de saisie */
+  font-family: 'Verdana', sans-serif;
+}
+
+table {
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  
+}
+
+/* Ajout de styles pour le text dans tableau */
+table th {
+  text-align: center;
+  padding: 5px;
+  font-family: 'Courier New', monospace;
+}
+
+/* Ajout de styles pour le text dans tableau les prenom et nom */
+table td {
+  text-align: center;
+  padding: 5px;
+  font-family: 'Courier New', monospace;
+}
+
+/* Ajout de styles pour le boutton supprimer dans le tableau*/
+table button {
+  width: 100%; /* Le bouton occupe toute la largeur du formulaire */
+  padding: 5px; /* Ajoutez un espace autour du texte du bouton */
+  margin-top: 5px; /* Espacement par rapport aux champs de saisie */
+  margin-bottom: 5px;
+  font-family: 'Verdana', sans-serif;
+}
