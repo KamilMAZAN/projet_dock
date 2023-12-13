@@ -61,11 +61,9 @@ form button {
 }
 
 table {
+  border-collapse: collapse;
   width: 50%;
-  background-color: rgba(0, 0, 0, 0.8);
-  /*text en blanc*/
-  color: rgb(223, 10, 212);
-  
+  border : 3px solid rgb(0, 0, 0);
 }
 
 /* Ajout de styles pour le text dans tableau */
@@ -73,10 +71,14 @@ table th {
   text-align: center;
   padding: 5px;
   font-family: 'Courier New', monospace;
+  background-color: rgb(137, 14, 218);
+  color: rgb(0, 0, 0);
 }
 
 /* Ajout de styles pour le text dans tableau les prenom et nom */
 table td {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: rgb(223, 10, 212);
   text-align: center;
   padding: 5px;
   font-family: 'Courier New', monospace;
