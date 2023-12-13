@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Récuperer votre mot de passe</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Ajoutez cette balise script pour inclure jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+</head>
+<body>
+  <header>
+    <h1>La liste de tout les utilisateurs</h1>
+    <a href="index.html">Enregistrement</a>
+    <a href="Recup.html">Récuperer votre mot de passe</a>
+  </header>
+ 
+
+ <!-- Tableau pour afficher les Mails et préMails depuis PostgreSQL -->
+ <table border="1">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Mail</th>
+      <th>Mot de passe</th>
+      <th>Supprimer</th>
+    </tr>
+  </thead>
+  <tbody id="userDataTableBody"></tbody>
+</table>
+
+<script>
+
+function submitForm() {
+    const data1 = $('#Username').val();
+    const data2 = $('#Mail').val();
+    const data3 = $('#MDP').val();
+
+    console.log('Submitting data:', data1, data2, data3);
+
+    $.ajax({
+      type: 'POST',
+      url: '/submit',
+      data: { Username: data1, Mail: data2, MDP: data3 },
+      success: function(response) {
+        console.log('Server response:', response);
+        updateUserDataTable(response.dataFromDB);
+      },
+      error: function(error) {
+        console.error('Error submitting data:', error);
+      }
+    });
+  }
+
+
+  function updateUserDataTable(data) {
+    const userDataTableBody = document.getElementById('userDataTableBody');
+
+    // Clear existing rows
+    userDataTableBody.innerHTML = '';
+
+    // Insert new rows
+    data.forEach(function(rowData) {
+      const newRow = userDataTableBody.insertRow();
+      const cell1 = newRow.insertCell(0);
+      const cell2 = newRow.insertCell(1);
+      const cell3 = newRow.insertCell(2);
+      const cell4 = newRow.insertCell(3); // cellule pour le bouton de suppression
+
+      cell1.innerHTML = rowData.Username;
+      cell2.innerHTML = rowData.Mail;
+
+      // Bouton pour récupérer le mot de passe
+      const retrievePasswordButton = document.createElement('button');
+      retrievePasswordButton.textContent = 'Récupérer le mot de passe';
+      retrievePasswordButton.onclick = function() {
+        // Appeler la fonction AJAX pour récupérer le mot de passe depuis Redis
+        retrievePassword(rowData.Username, rowData.Mail);
+      };
+      cell3.appendChild(retrievePasswordButton);
+
+      // Bouton pour supprimer l'utilisateur
+      const deleteUserButton = document.createElement('button');
+      deleteUserButton.textContent = 'Supprimer l\'utilisateur';
+      deleteUserButton.onclick = function() {
+        // Appeler la fonction AJAX pour supprimer l'utilisateur
+        deleteUser(rowData.Username, rowData.Mail);
+      };
+      cell4.appendChild(deleteUserButton);
+    });
+  }
+   // JavaScript code for AJAX retrieval of password from Redis
+   function retrievePassword(Username, Mail) {
+    $.ajax({
+      type: 'GET',
+      url: `/getPassword?Username=${Username}&Mail=${Mail}`,
+      success: function(response) {
+        console.log('Mot de passe récupéré:', response);
+        alert(`Le mot de passe pour ${Username} ${Mail} est : ${response}`);
+      },
+      error: function(error) {
+        console.error('Erreur lors de la récupération du mot de passe:', error);
+      }
+    });
+  }
+
+  // JavaScript code to fetch user data on page load
+  $(document).ready(function() {
+    $.ajax({
+      type: 'GET',
+      url: '/getUserData',
+      success: function(response) {
+        console.log('Données utilisateur reçues sur le chargement de la page:', response);
+        updateUserDataTable(response);
+      },
+      error: function(error) {
+        console.error('Erreur lors de la récupération des données utilisateur:', error);
+      }
+    });
+  });
+
+
+   // JavaScript code for AJAX deletion of user from PostgreSQL
+function deleteUser(Username, Mail) {
+  $.ajax({
+    type: 'DELETE',
+    url: `/deleteUser?Username=${Username}&Mail=${Mail}`,
+    success: function(response) {
+      console.log('Utilisateur supprimé avec succès:', response);
+      // Mettre à jour le tableau après la suppression
+      updateUserDataTable(response.dataFromDB);
+    },
+    error: function(error) {
+      console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+      updateUserDataTable(response.dataFromDB);
+    }
+  });
+}
+
+</script>
+</body>
+</html>

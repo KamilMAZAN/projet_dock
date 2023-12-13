@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Récuperer votre mot de passe</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Ajoutez cette balise script pour inclure jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+</head>
+<body>
+  <header>
+    <h1>Récuperer votre mot de passe</h1>
+    <a href="Liste.html">Liste des utilisateurs</a>
+    <a href="index.html">Enregistrement</a>
+  </header>
+  
+  <form id="myForm" method="post">
+    <!-- Input 1 -->
+    <label for="Username">Username :</label>
+    <input type="text" id="Username" name="Username" required placeholder="Username" onfocus="this.placeholder=''" onblur="this.placeholder='Username'">
+    <br>
+
+    <!-- Input 2 -->
+    <label for="Mail">Mail :</label>
+    <input type="text" id="Mail" name="Mail" required placeholder="Mail@gmail.com" onfocus="this.placeholder=''" onblur="this.placeholder='Mail@gmail.com'">
+    <br>
+
+    <!-- Submit Button -->
+    <button type="button" onclick="submitForm()">Submit</button>
+  </form>
+
+    <!-- Retourner le mot de passe a partir des 2 inputs -->
+    <script>
+        function submitForm() {
+            const data1 = $('#Username').val();
+            const data2 = $('#Mail').val();
+            console.log('Submitting data:', data1, data2);
+            retrievePassword(data1, data2);
+        }
+
+     // JavaScript code for AJAX retrieval of password from Redis
+   function retrievePassword(Username, Mail) {
+    $.ajax({
+      type: 'GET',
+      url: `/getPassword?Username=${Username}&Mail=${Mail}`,
+      success: function(response) {
+        if (!response) {
+          alert(`Aucun mot de passe trouvé pour ${Username} ${Mail}`);
+          return;
+        }
+        console.log('Mot de passe récupéré:', response);
+        alert(`Le mot de passe pour ${Username} ${Mail} est : ${response}`);
+      },
+      error: function(error) {
+        console.error('Erreur lors de la récupération du mot de passe:', error);
+      }
+      
+    });
+    // Supprimez les données des inputs
+    $('#Username').val('');
+    $('#Mail').val('');
+    $('#MDP').val('');
+  }
+      </script>
+        
+</body>
+</html>
