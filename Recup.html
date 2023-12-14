@@ -40,7 +40,7 @@
         function submitForm() {
             const data1 = $('#Username').val();
             const data2 = $('#Mail').val();
-            if (!data1 || !data2 || !data3) {
+            if (!data1 || !data2) {
                 alert('Veuillez remplir tous les champs');
                 return;
             }
@@ -69,7 +69,6 @@
     // Supprimez les données des inputs
     $('#Username').val('');
     $('#Mail').val('');
-    $('#MDP').val('');
   }
       </script>
 
