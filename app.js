@@ -4,9 +4,9 @@ const { Pool } = require('pg');
 const redis = require('redis');
 
 const app = express();
-const port = 80;
+const port = 2115;
 
-app.use(express.static(__dirname)); 
+app.use(express.static(__dirname));
 
 // PostgreSQL configuration
 const pgPool = new Pool({
@@ -18,7 +18,9 @@ const pgPool = new Pool({
 });
 
 // Redis configuration
-const redisClient = redis.createClient({ host: 'redis', port: 6379 });
+// Utilisez la variable d'environnement REDIS_HOST, avec une valeur par défaut si elle n'est pas définie
+const redisHost = process.env.REDIS_HOST || 'redis';
+const redisClient = redis.createClient({ host: redisHost, port: 6379 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -49,7 +51,7 @@ app.post('/submit', async (req, res) => {
 
     // Récupération de toutes les données depuis Redis sous la bonne forme
     const allDataFromRedis = await new Promise((resolve, reject) => {
-      redisClient.smembers('myset', (err, result) => {
+      redisClient.smembers('data', (err, result) => {
         if (err) reject(err);
         else resolve(result);
       });
@@ -64,7 +66,6 @@ app.post('/submit', async (req, res) => {
     res.status(500).send('Error submitting data to databases');
   }
 });
-
 
 app.get('/getUserData', async (req, res) => {
   try {
@@ -114,7 +115,6 @@ app.delete('/deleteUser', async (req, res) => {
     await pgClient.query('DELETE FROM utilisateur WHERE "Username" = $1 AND "Mail" = $2', [Username, Mail]);
 
     console.log(`Utilisateur ${Username} ${Mail} supprimé depuis PostgreSQL`);
-    
 
     pgClient.release();
 
@@ -124,9 +124,6 @@ app.delete('/deleteUser', async (req, res) => {
     res.status(500).send('Erreur lors de la suppression de l\'utilisateur depuis PostgreSQL');
   }
 });
-
-
-
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);

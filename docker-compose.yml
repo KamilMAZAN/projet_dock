@@ -4,10 +4,12 @@ services:
     image: mon_projet_web
     build: .
     ports:
-      - "80:80"
+      - "2115:2115"
     depends_on:
       - postgres
       - redis
+    networks:
+      - my_network
   postgres:
     image: postgres:latest
     environment:
@@ -17,13 +19,20 @@ services:
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
       - pg-data:/var/lib/postgresql/data
+    networks:
+      - my_network
   redis:
     image: "redis:latest"
     ports:
       - "6379:6379"
     volumes:
       - redis-data:/data
+    networks:
+      - my_network
 
 volumes:
   pg-data:
   redis-data:
+
+networks:
+  my_network:
