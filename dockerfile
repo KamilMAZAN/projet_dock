@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install redis
-
 COPY . .
 
 EXPOSE 80

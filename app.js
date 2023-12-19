@@ -18,7 +18,6 @@ const pgPool = new Pool({
 });
 
 // Redis configuration
-// Utilisez la variable d'environnement REDIS_HOST, avec une valeur par défaut si elle n'est pas définie
 const redisHost = process.env.REDIS_HOST || 'redis';
 const redisClient = redis.createClient({ host: redisHost, port: 6379 });
 
